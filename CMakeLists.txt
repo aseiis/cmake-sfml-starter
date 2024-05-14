@@ -1,41 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(CMakeSFMLProject LANGUAGES CXX)
 
-# copy_assets macro
-macro(copy_assets srcDir destDir)
-  message(STATUS "Copying assets from ${srcDir} to ${destDir}")
-
-  # Ensure the destination directory exists.
-  file(MAKE_DIRECTORY ${destDir})
-
-  # Copy all files and directories recursively.
-  # Using GLOB_RECURSE to handle subdirectories as well.
-  file(GLOB_RECURSE assetsToCopy RELATIVE ${srcDir} "${srcDir}/*")
-
-  foreach(asset ${assetsToCopy})
-      # Compute source and destination paths.
-      set(src "${srcDir}/${asset}")
-      set(dst "${destDir}/${asset}")
-
-      # Check if the destination file/directory already exists.
-      if(NOT EXISTS "${dst}")
-          # Check if current asset is a directory.
-          if(IS_DIRECTORY "${src}")
-              # Make directory at the destination.
-              file(MAKE_DIRECTORY "${dst}")
-          else()
-              # Copy file to destination.
-              file(COPY "${src}" DESTINATION "${destDir}/${asset}")
-          endif()
-      else()
-          message(STATUS "Skipping existing asset: ${dst}")
-      endif()
-  endforeach()
-endmacro(copy_assets)
-
-# Example usage: adjust src and dest directories as required.
-copy_assets("${CMAKE_SOURCE_DIR}/assets" "${CMAKE_BINARY_DIR}/assets")
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
