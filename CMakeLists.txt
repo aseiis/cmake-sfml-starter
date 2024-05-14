@@ -22,6 +22,15 @@ add_executable(CMakeSFMLProject
     src/main.cpp
     src/Game.cpp
 )
+
+add_custom_target(copy_assets ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${PROJECT_SOURCE_DIR}/assets
+        ${PROJECT_BINARY_DIR}/assets
+        COMMENT "Copying assets into binary directory")
+
+add_dependencies(CMakeSFMLProject copy_assets)
+
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics)
 
 if(WIN32)
@@ -33,16 +42,3 @@ if(WIN32)
                 $<TARGET_FILE_DIR:CMakeSFMLProject>
         VERBATIM)
 endif()
-
-# Copy the assets to the build directory
-# add_custom_command(
-#   TARGET CMakeSFMLProject PRE_BUILD
-#   COMMAND ${CMAKE_COMMAND} -E make_directory ${ASSETS_DEST_DIR}
-# )
-# add_custom_command(
-#   TARGET CMakeSFMLProject PRE_BUILD
-#   COMMAND ${CMAKE_COMMAND} -E copy_directory ${ASSETS_DIR} ${ASSETS_DEST_DIR}
-#   COMMENT "Copying assets"
-# )
-
-#install(TARGETS CMakeSFMLProject RUNTIME DESTINATION bin)
